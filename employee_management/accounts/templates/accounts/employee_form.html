@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Form</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    <h1>{{ employee_id|default:"Create" }} Employee</h1>
+    <form id="employeeForm" method="POST" novalidate>
+        <div id="formContainer">
+            {{ form.as_p }}
+        </div>
+        <button type="submit">Save Employee</button>
+    </form>
+
+    <script>
+        const form = document.getElementById('employeeForm');
+
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+            const formData = new FormData(form);
+            
+            axios.post(window.location.href, formData)
+                .then(response => {
+                    if (response.data.success) {
+                        alert(response.data.message);
+                    } else {
+                        alert('Error: ' + JSON.stringify(response.data.errors));
+                    }
+                })
+                .catch(error => {
+                    console.error('There was an error!', error);
+                });
+        });
+    </script>
+</body>
+</html>

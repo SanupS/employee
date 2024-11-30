@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Builder</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.14.0/Sortable.min.js"></script>
+</head>
+<body>
+    <h1>Build Your Form</h1>
+    <form method="post">
+        {% csrf_token %}
+        <input type="text" name="form_name" placeholder="Enter Form Name" required>
+        <div id="form-fields">
+        </div>
+        <button type="button" id="add-field-btn">Add Field</button>
+        <button type="submit">Save Form</button>
+    </form>
+
+    <script>
+        let fieldCount = 0;
+
+        $('#add-field-btn').click(function() {
+            fieldCount++;
+            $('#form-fields').append(`
+                <div class="form-field" data-id="${fieldCount}">
+                    <input type="text" name="field_${fieldCount}_label" placeholder="Field Label">
+                    <select name="field_${fieldCount}_type">
+                        <option value="text">Text</option>
+                        <option value="number">Number</option>
+                        <option value="date">Date</option>
+                        <option value="password">Password</option>
+                    </select>
+                    <button type="button" class="remove-field-btn">Remove</button>
+                </div>
+            `);
+        });
+
+        $(document).on('click', '.remove-field-btn', function() {
+            $(this).parent().remove();
+        });
+
+        new Sortable(document.getElementById('form-fields'), {
+            animation: 150
+        });
+    </script>
+</body>
+</html>

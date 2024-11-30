@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee List</title>
+</head>
+<body>
+    <h1>Employee List</h1>
+
+    <form method="get" action="{% url 'employee_list' %}">
+        <input type="text" name="search" placeholder="Search employees..." value="{{ search_query }}">
+        <button type="submit">Search</button>
+    </form>
+
+    <table border="1">
+        <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Email</th>
+            <th>Actions</th>
+        </tr>
+        {% for employee in employees %}
+        <tr>
+            <td>{{ employee.first_name }}</td>
+            <td>{{ employee.last_name }}</td>
+            <td>{{ employee.email }}</td>
+            <td>
+                <a href="{% url 'delete_employee' employee.id %}">Delete</a>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="4">No employees found.</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
